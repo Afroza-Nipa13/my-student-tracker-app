@@ -5,13 +5,10 @@ import Navbar from '../pages/navbar/Navbar';
 const MainLayOut = () => {
     return (
         <>
-           <div>
+           <div className='bg-slate-900'>
             <Navbar></Navbar>
-           </div>
-           <main>
             <Outlet></Outlet>
-           </main>
-           <div>
+           
 
            </div>
         </>
