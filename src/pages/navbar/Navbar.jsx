@@ -4,32 +4,32 @@ import { NavLink } from "react-router";
 const Navbar = () => {
   const links = (
     <>
-      <li>
+      <li className="px-3 py-1">
         <NavLink to="/class-schedule">Class Schedule</NavLink>
       </li>
-      <li>
+      <li className="px-3 py-1">
         <NavLink to="/budget-plan">Budget Plan</NavLink>
       </li>
-      <li>
+      <li className="px-3 py-1">
         <NavLink to="/notes">Notes</NavLink>
       </li>
-      <li>
+      <li className="px-3 py-1">
         <NavLink to="/calculator">Calculator</NavLink>
       </li>
-      <li>
+      <li className="px-3 py-1">
         <NavLink to="/todo">To-do List</NavLink>
       </li>
-      <li>
+      <li className="px-3 py-1">
         <NavLink to="/reminder">Reminder</NavLink>
       </li>
-      <li>
+      <li className="px-3 py-1">
         <NavLink to="/resources">Resources</NavLink>
       </li>
     </>
   );
 
   return (
-    <div className="navbar bg-base-100 shadow-sm lg:px-8">
+    <div className="navbar bg-slate-800 shadow-sm lg:px-8">
       <div className="navbar-start">
         {/* Dropdown for small screens */}
         <div className="dropdown dropdown-hover">
@@ -51,18 +51,18 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+            className="menu menu-sm dropdown-content text-gray-50 rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
             {links}
           </ul>
         </div>
-        <NavLink to="/" className="btn btn-ghost text-xl">
-          Student Toolkit
+        <NavLink to="/" className="text-xl text-gray-50">
+          Student <span className="text-blue-300">Toolkits </span>
         </NavLink>
       </div>
 
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">{links}</ul>
+        <ul className="menu menu-horizontal text-gray-50 divide-x-2 px-1">{links}</ul>
       </div>
 
       <div className="navbar-end">
