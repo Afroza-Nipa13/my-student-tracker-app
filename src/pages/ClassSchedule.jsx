@@ -1,10 +1,130 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const ClassSchedule = () => {
+    const [classes, setClasses]=useState([]);
+    const [form, setForm]=useState({
+        subject: "",
+        time:"",
+        day:"",
+        instructor:"",
+        color:"#4CAF50"
+    })
+    const handleSubmit=(e)=>{
+
+    }
+
+    const handleChange=(e)=>{
+
+    }
+    const handleDelete=()=>{
+
+    }
     return (
-        <div>
-            
+        <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
+      <h1 className="text-2xl font-bold mb-6">📚 Class Schedule Tracker</h1>
+
+      {/* Form */}
+      <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-6 w-full max-w-lg mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input
+            type="text"
+            name="subject"
+            placeholder="Subject"
+            value={form.subject}
+            onChange={handleChange}
+            className="border p-2 rounded"
+          />
+          <input
+            type="time"
+            name="time"
+            value={form.time}
+            onChange={handleChange}
+            className="border p-2 rounded"
+          />
+          <select
+            name="day"
+            value={form.day}
+            onChange={handleChange}
+            className="border p-2 rounded"
+          >
+            <option value="">Select Day</option>
+            <option>Monday</option>
+            <option>Tuesday</option>
+            <option>Wednesday</option>
+            <option>Thursday</option>
+            <option>Friday</option>
+            <option>Saturday</option>
+            <option>Sunday</option>
+          </select>
+          <input
+            type="text"
+            name="instructor"
+            placeholder="Instructor"
+            value={form.instructor}
+            onChange={handleChange}
+            className="border p-2 rounded"
+          />
+          <input
+            type="color"
+            name="color"
+            value={form.color}
+            onChange={handleChange}
+            className="border rounded h-10"
+          />
         </div>
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600 w-full"
+        >
+          {editIndex !== null ? "Update Class" : "Add Class"}
+        </button>
+      </form>
+
+      {/* Class Table */}
+      <div className="w-full max-w-3xl bg-white shadow-md rounded-lg overflow-hidden">
+        {classes.length === 0 ? (
+          <p className="text-center text-gray-500 p-4">No classes added yet.</p>
+        ) : (
+          <table className="w-full">
+            <thead className="bg-gray-200">
+              <tr>
+                <th className="p-2 text-left">Subject</th>
+                <th className="p-2 text-left">Time</th>
+                <th className="p-2 text-left">Day</th>
+                <th className="p-2 text-left">Instructor</th>
+                <th className="p-2 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {classes.map((cls, index) => (
+                <tr key={index} style={{ backgroundColor: cls.color + "33" }}>
+                  <td className="p-2 font-semibold" style={{ color: cls.color }}>
+                    {cls.subject}
+                  </td>
+                  <td className="p-2">{cls.time}</td>
+                  <td className="p-2">{cls.day}</td>
+                  <td className="p-2">{cls.instructor}</td>
+                  <td className="p-2 text-center space-x-2">
+                    <button
+                      onClick={() => handleEdit(index)}
+                      className="bg-yellow-400 px-2 py-1 rounded hover:bg-yellow-500"
+                    >
+                      ✏️
+                    </button>
+                    <button
+                      onClick={() => handleDelete(index)}
+                      className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                    >
+                      ❌
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </div>
     );
 };
 
