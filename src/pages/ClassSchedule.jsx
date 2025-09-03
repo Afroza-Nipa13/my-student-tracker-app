@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Swal from "sweetalert2";
+
 
 const ClassSchedule = () => {
     const [classes, setClasses]=useState([]);
@@ -9,16 +11,106 @@ const ClassSchedule = () => {
         instructor:"",
         color:"#4CAF50"
     })
-    const handleSubmit=(e)=>{
+    const [editIndex,setEditIndex]= useState(null)
+   const handleSubmit = (e) => {
+  e.preventDefault();
 
-    }
+  if (!form.subject || !form.time || !form.day) {
+    Swal.fire({
+      icon: "warning",
+      title: "Missing Fields",
+      text: "Please fill all required fields before adding a class.",
+      confirmButtonColor: "#3085d6",
+    });
+    return;
+  }
+
+  if (editIndex !== null) {
+    const updated = [...classes];
+    updated[editIndex] = form;
+    setClasses(updated);
+    setEditIndex(null);
+
+    Swal.fire({
+      icon: "success",
+      title: "Updated!",
+      text: "Class updated successfully.",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+  } else {
+    setClasses([...classes, form]);
+    Swal.fire({
+      icon: "success",
+      title: "Added!",
+      text: "New class added successfully.",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+  }
+
+  setForm({ subject: "", time: "", day: "", instructor: "", color: "#4CAF50" });
+};
+ 
 
     const handleChange=(e)=>{
+      const name= e.target.value;
+     
+      setForm({...form,[e.target.name]:name})
 
     }
-    const handleDelete=()=>{
 
+const handleEdit = (index) => {
+  Swal.fire({
+    title: "Edit Class?",
+    text: "Do you want to edit this class?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Yes, edit",
+    cancelButtonText: "Cancel",
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      setForm(classes[index]);
+      setEditIndex(index);
+
+      Swal.fire({
+        icon: "info",
+        title: "Edit Mode",
+        text: "You can now edit the selected class.",
+        timer: 1500,
+        showConfirmButton: false,
+      });
     }
+  });
+};
+
+const handleDelete = (index) => {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "This class will be permanently deleted!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "No, keep it",
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      setClasses(classes.filter((_, i) => i !== index));
+
+      Swal.fire({
+        icon: "success",
+        title: "Deleted!",
+        text: "Class has been deleted successfully.",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    }
+  });
+};
+
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
       <h1 className="text-2xl font-bold mb-6">📚 Class Schedule Tracker</h1>
