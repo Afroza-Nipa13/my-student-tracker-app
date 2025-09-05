@@ -1,7 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router";
+import useAuth from "../../hooks/useAuth";
 
 const Navbar = () => {
+  const [user]= useAuth();
   const links = (
     <>
       <li className="px-3 py-1">
@@ -68,22 +70,12 @@ const Navbar = () => {
       <div className="navbar-end">
         {/* User profile dropdown */}
         <div className="dropdown dropdown-hover dropdown-end">
-          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+          <div tabIndex={0} role="button" className="btn-circle avatar">
             <div className="w-10 rounded-full">
               <img alt="User" src="/src/assets/user.png" />
             </div>
           </div>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
-          >
-            <li>
-              <NavLink to="/profile">Profile</NavLink>
-            </li>
-            <li>
-              <button>Logout</button>
-            </li>
-          </ul>
+         
         </div>
 
         <NavLink to="/login" className="btn mx-2">
