@@ -3,7 +3,17 @@ import { NavLink } from "react-router";
 import useAuth from "../../hooks/useAuth";
 
 const Navbar = () => {
-  const [user]= useAuth();
+  const { user, logOut } = useAuth() || {}; // fallback দিয়ে safe করা
+
+  const handleLogOut = async () => {
+    try {
+      await logOut(); // AuthProvider এ logOut function থাকতে হবে
+      console.log("User logged out");
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
+
   const links = (
     <>
       <li className="px-3 py-1">
@@ -32,6 +42,7 @@ const Navbar = () => {
 
   return (
     <div className="navbar bg-slate-800 shadow-sm lg:px-8">
+      {/* Left Section */}
       <div className="navbar-start">
         {/* Dropdown for small screens */}
         <div className="dropdown dropdown-hover">
@@ -59,31 +70,52 @@ const Navbar = () => {
           </ul>
         </div>
         <NavLink to="/" className="text-xl text-gray-50">
-          Student <span className="text-blue-300">Toolkits </span>
+          Student <span className="text-blue-300">Toolkits</span>
         </NavLink>
       </div>
 
+      {/* Center Section */}
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal text-gray-50 divide-x-1 px-1">{links}</ul>
+        <ul className="menu menu-horizontal text-gray-50 divide-x-1 px-1">
+          {links}
+        </ul>
       </div>
 
-      <div className="navbar-end">
-        {/* User profile dropdown */}
-        <div className="dropdown dropdown-hover dropdown-end">
-          <div tabIndex={0} role="button" className="btn-circle avatar">
-            <div className="w-10 rounded-full">
-              <img alt="User" src="/src/assets/user.png" />
+      {/* Right Section */}
+      <div className="navbar-end gap-2">
+        {!user ? (
+          // যদি user না থাকে → Sign In & Register দেখাও
+          <>
+            <NavLink to="/signIn" className="btn btn-outline btn-sm">
+              Sign In
+            </NavLink>
+            <NavLink to="/register" className="btn btn-primary btn-sm">
+              Register
+            </NavLink>
+          </>
+        ) : (
+          // যদি user থাকে → Photo & Log Out
+          <>
+            <div className="dropdown dropdown-hover dropdown-end">
+              <div tabIndex={0} role="button" className="btn-circle avatar">
+                <div className="w-10 rounded-full">
+                  <img
+                    alt="User"
+                    src={user?.photoURL || "/src/assets/user.png"}
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-         
-        </div>
-
-        <NavLink to="/login" className="btn mx-2">
-          Sign Out
-        </NavLink>
+            <button onClick={handleLogOut} className="btn btn-error btn-sm">
+              Log Out
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
 };
 
 export default Navbar;
+

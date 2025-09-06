@@ -9,6 +9,8 @@ import Calculator from "../pages/Calculator";
 import Todo from "../pages/Todo";
 import Reminder from "../pages/Reminder";
 import Resources from "../pages/Resources";
+import Register from "../Authentication/Register";
+import SignIn from "../Authentication/SignIn";
 
 
 const router = createBrowserRouter([
@@ -24,6 +26,8 @@ const router = createBrowserRouter([
       { path: "todo", element: <Todo /> },
       { path: "reminder", element: <Reminder /> },
       { path: "resources", element: <Resources /> },
+      { path:"register", element:<Register/>},
+      {path:"signIn", element:<SignIn/>}
     ],
   },
 ]);
