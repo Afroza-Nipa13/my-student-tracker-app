@@ -84,17 +84,17 @@ const Navbar = () => {
       {/* Right Section */}
       <div className="navbar-end gap-2">
         {!user ? (
-          // যদি user না থাকে → Sign In & Register দেখাও
+         
           <>
-            <NavLink to="/signIn" className="btn btn-outline btn-sm">
+            <NavLink to="/signIn" className="btn btn-outline bg-sky-400 btn-sm">
               Sign In
             </NavLink>
-            <NavLink to="/register" className="btn btn-primary btn-sm">
+            <NavLink to="/register" className="btn btn-info btn-sm">
               Register
             </NavLink>
           </>
         ) : (
-          // যদি user থাকে → Photo & Log Out
+          
           <>
             <div className="dropdown dropdown-hover dropdown-end">
               <div tabIndex={0} role="button" className="btn-circle avatar">

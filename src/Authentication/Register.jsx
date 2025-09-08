@@ -3,27 +3,78 @@ import useAuth from '../hooks/useAuth';
 import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import SocialLogin from './SocialLogin';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import axios from 'axios';
+import useAxios from '../hooks/useAxios';
+import Swal from 'sweetalert2';
 
 const Register = () => {
-    const {createUser, updateUser}=useAuth()
-    const {register,handleSubmit,formState:{errors}}=useForm()
-     const [profilePic, setProfilePic] = useState('')
-     const [showPassword, setShowPassword] = useState(false);
-   
-   const togglePasswordVisibility = () => {
+  const { createUser, updateProfile } = useAuth()
+ const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const [profilePic, setProfilePic] = useState('')
+  const [showPassword, setShowPassword] = useState(false);
+  const axiosPublic = useAxios()
+  const navigate=useNavigate()
+
+  const togglePasswordVisibility = () => {
     setShowPassword(prev => !prev)
   }
 
-     const handleImageUpload=async(e)=>{
+  const handleImageUpload = async (e) => {
+    const image = e.target.files[0]
+    const formData = new FormData()
+    formData.append('image', image)
 
-   }
-    const onSubmit=async(data)=>{
+    // image upload 
+    const imageUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_ImgBB_Api_Key}`
+    const res = await axios.post(imageUrl, formData)
+    setProfilePic(res.data.data.url)
+  }
+  const onSubmit = async (data) => {
+  try {
+    const result = await createUser(data.email, data.password);
+    const createdUser = result.user;
+    console.log(createdUser)
 
-    }
-    return (
-           <div className='flex justify-center items-center min-h-screen '>
-      
+
+    // saving in axiosPublic
+    await axiosPublic.post("/users", {
+      name: data.name,
+      email: data.email,
+      image: profilePic || ""
+    });
+
+    await updateProfile({
+      displayName: data.name,
+      photoURL: profilePic || ""
+    });
+
+    
+
+    Swal.fire({
+      title: "Registration Successful!",
+      text: "Your account has been created successfully.",
+      icon: "success",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Go to Home"
+    }).then(() => {
+      reset();
+      navigate("/");
+    });
+
+  } catch (err) {
+    Swal.fire({
+      title: "Oops!",
+      text: err.message || "Something went wrong. Please try again.",
+      icon: "error",
+      confirmButtonColor: "#d33"
+    });
+  }
+};
+
+  return (
+    <div className='flex justify-center items-center min-h-screen '>
+
       <div className='flex flex-col max-w-md p-6 rounded-md sm:p-10 shadow-2xl bg-gray-100 text-gray-900'>
         <div className='mb-8 text-center'>
           <p className='text-sm text-gray-400'> </p>
@@ -145,17 +196,17 @@ const Register = () => {
         <p className='px-6 text-sm text-center text-gray-400'>
           Already have an account?{' '}
           <Link
-            to='/login'
+            to='/signIn'
             className='hover:underline hover:text-[#851143] text-gray-600'
           >
-            Login
+            Sign In
           </Link>
 
         </p>
       </div>
     </div>
 
-    );
+  );
 };
 
 export default Register;
