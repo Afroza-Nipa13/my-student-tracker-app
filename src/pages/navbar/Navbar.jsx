@@ -1,17 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router";
 import useAuth from "../../hooks/useAuth";
 
 const Navbar = () => {
-  const { user, logOut } = useAuth() || {}; // fallback দিয়ে safe করা
+  const { user, LogOut } = useAuth() || {}; 
+  const [photoURL, setPhotoURL]=useState("/src/assets/user.png")
+  
+  console.log("User object",user)
 
-  const handleLogOut = async () => {
-    try {
-      await logOut(); // AuthProvider এ logOut function থাকতে হবে
-      console.log("User logged out");
-    } catch (err) {
-      console.error("Logout failed:", err);
+  useEffect(()=>{
+    if(user && user.photoURL){
+      console.log("Setting photoURL to:", user.photoURL);
+      setPhotoURL(user.photoURL)
+    }else{
+      setPhotoURL("/src/assets/user.png")
     }
+  },[user])
+
+  // SweetAlert logout confirmation
+  const handleLogout = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You will be logged out from your account!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, log out!',
+      cancelButtonText: 'Cancel',
+      background: '#1f2937',
+      color: '#fff',
+      iconColor: '#ef4444'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        LogOut();
+        Swal.fire({
+          title: 'Logged Out!',
+          text: 'You have been successfully logged out.',
+          icon: 'success',
+          background: '#1f2937',
+          color: '#fff',
+          confirmButtonColor: '#3085d6',
+          iconColor: '#10b981'
+        });
+      }
+    });
   };
 
   const links = (
@@ -98,16 +131,31 @@ const Navbar = () => {
           <>
             <div className="dropdown dropdown-hover dropdown-end">
               <div tabIndex={0} role="button" className="btn-circle avatar">
-                <div className="w-10 rounded-full">
+                <div className="w-10 rounded-full border-2 border-slate-600">
                   <img
-                    alt="User"
-                    src={user?.photoURL || "/src/assets/user.png"}
+                    alt="User Profile"
+                    src={photoURL}
+                    onError={(e) => {
+                      e.target.src = "/src/assets/user.png";
+                    }}
                     referrerPolicy="no-referrer"
+                    className="object-cover"
                   />
                 </div>
               </div>
+              <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-slate-800 rounded-box w-52 mt-2">
+                <li className="px-4 py-2 text-gray-100 border-b border-slate-700">
+                  <div className="font-medium">{user.displayName || 'User'}</div>
+                  <div className="text-sm text-gray-300">{user.email}</div>
+                </li>
+                <li><NavLink to="/profile" className="text-gray-200">Profile</NavLink></li>
+                <li><NavLink to="/settings" className="text-gray-200">Settings</NavLink></li>
+              </ul>
             </div>
-            <button onClick={handleLogOut} className="btn btn-error btn-sm">
+            <button onClick={handleLogout} className="btn btn-error btn-sm text-white flex items-center gap-1">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
               Log Out
             </button>
           </>

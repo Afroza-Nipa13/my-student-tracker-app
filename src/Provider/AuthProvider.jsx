@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { AuthContext } from '../Context/AuthContext';
-import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut,updateProfile } from 'firebase/auth';
 import { auth } from '../Firebase/firebase.init';
+import useAxiosSecure from '../hooks/useAxiosSecure';
 
 
 
@@ -9,6 +10,7 @@ const googleProvider = new GoogleAuthProvider()
 const AuthProvider = ({children}) => {
     const [user,setUser]=useState(null)
     const [loading, setLoading]= useState(true)
+    const axiosSecure =useAxiosSecure()
     
     const createUser =(email, password)=>{
         setLoading(false)
@@ -25,8 +27,8 @@ const AuthProvider = ({children}) => {
     }
 
     const LogOut =async()=>{
-        setLoading(false)
-        return signOut()
+        setLoading(true)
+        return signOut(auth)
     }
 
     const UpdateProfile =(profileInfo)=>{
@@ -34,19 +36,35 @@ const AuthProvider = ({children}) => {
         return updateProfile(auth.currentUser, profileInfo);
     }
 
-    // onAuthStateChange
+   // onAuthStateChange
+  
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async currentUser => {
+      setUser(currentUser)
 
-    useEffect(()=>{
-        const unsubscribe= onAuthStateChanged(auth, async currentUser =>{
-            setUser(currentUser)
+      if (currentUser) {
+        
+        try {
+          const res = await axiosSecure.post('/jwt', { email: currentUser.email })
+          console.log('JWT set in cookie:', res.data)
+        } catch (err) {
+          console.error('JWT error:', err)
+        }
+      } else {
+        
+        try {
+          await axiosSecure.get('/logout')
+          console.log('Token cleared')
+        } catch (err) {
+          console.error('Logout error:', err)
+        }
+      }
 
+      setLoading(false)
+    })
 
-             setLoading(false)
-        })
-
-        return ()=>unsubscribe()
-    },[])
-
+    return () => unsubscribe()
+  }, [axiosSecure])
     const authInfo={
         user,
     setUser,
@@ -56,7 +74,7 @@ const AuthProvider = ({children}) => {
     LogOut,
     signInWithGoogle,
     signInUser,
-    updateProfile,
+    UpdateProfile,
     }
     return <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
 };
