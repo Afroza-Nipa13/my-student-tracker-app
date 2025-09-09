@@ -11,6 +11,7 @@ import Reminder from "../pages/Reminder";
 import Resources from "../pages/Resources";
 import Register from "../Authentication/Register";
 import SignIn from "../Authentication/SignIn";
+import ExamQAgenerator from "../pages/ExamQAgenerator";
 
 
 const router = createBrowserRouter([
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
       { path: "class-schedule", element: <ClassSchedule /> },
       { path: "budget-plan", element: <BudgetPlan /> },
       { path: "notes", element: <Notes /> },
+      { path: "ExamQAgenerator", element:<ExamQAgenerator/>},
       { path: "calculator", element: <Calculator /> },
       { path: "todo", element: <Todo /> },
       { path: "reminder", element: <Reminder /> },

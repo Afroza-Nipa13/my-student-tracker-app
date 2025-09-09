@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router";
 import useAuth from "../../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
   const { user, LogOut } = useAuth() || {}; 
@@ -69,6 +70,9 @@ const Navbar = () => {
       </li>
       <li className="px-3 py-1">
         <NavLink to="/resources">Resources</NavLink>
+      </li>
+      <li className="px-3 py-1">
+        <NavLink to='/ExamQAgenerator'>Exam QA generator</NavLink>
       </li>
     </>
   );
