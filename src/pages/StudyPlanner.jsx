@@ -70,7 +70,7 @@ const StudyPlanner = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-4">
+    <div className="max-w-5xl mx-auto p-4 min-h-screen">
       <h2 className="text-3xl font-bold text-center mb-6 text-sky-300">📅 Study Planner</h2>
 
       {/* Add Plan Form */}

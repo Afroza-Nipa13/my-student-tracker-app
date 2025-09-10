@@ -2,7 +2,7 @@ import axios from "axios";
 // http://localhost:5000
 //
 const axiosInstance = axios.create({
-    baseURL: `http://localhost:5000`,
+    baseURL: `https://my-student-tracker-app-server.vercel.app`,
     withCredentials:true
 })
 

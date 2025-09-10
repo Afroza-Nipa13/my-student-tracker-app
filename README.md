@@ -4,9 +4,9 @@ A React-based web application designed to make student life easier by helping th
 
 🚀 Live Demo
 
-🔗 Live Link: https://your-app-link.com
+🔗## Live Link: https://clinquant-tulumba-811686.netlify.app
 
-🔗 Backend API: https://your-backend-link.com
+🔗 Backend API: https://my-student-tracker-app-server.vercel.app
 
 ✨ Features
 1️⃣ Class Schedule Tracker 🗓️
@@ -79,7 +79,7 @@ student-life-toolkit/
 
 ⚙️ Installation & Setup
 1️⃣ Clone the repository:
-git clone https://github.com/your-username/student-life-toolkit.git
+git clone https://github.com/Afroza-Nipa13/my-student-tracker-app
 cd student-life-toolkit
 
 2️⃣ Setup Frontend:
