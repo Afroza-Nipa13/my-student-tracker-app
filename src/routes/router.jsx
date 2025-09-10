@@ -13,6 +13,7 @@ import Register from "../Authentication/Register";
 import SignIn from "../Authentication/SignIn";
 import ExamQAgenerator from "../pages/ExamQAgenerator";
 import StudyPlanner from "../pages/StudyPlanner";
+import ProfilePage from "../shared/ProfilePage";
 
 
 const router = createBrowserRouter([
@@ -30,7 +31,8 @@ const router = createBrowserRouter([
       { path: "reminder", element: <Reminder /> },
       { path: "resources", element: <Resources /> },
       { path:"register", element:<Register/>},
-      {path:"signIn", element:<SignIn/>}
+      {path:"signIn", element:<SignIn/>},
+      {path:"profile", element:<ProfilePage/>}
     ],
   },
 ]);

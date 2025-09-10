@@ -2,16 +2,33 @@ import React from 'react';
 import { FaGoogle } from 'react-icons/fa';
 import useAuth from '../hooks/useAuth';
 import { useLocation, useNavigate } from 'react-router';
+import useAxios from '../hooks/useAxios';
+import useAxiosSecure from '../hooks/useAxiosSecure';
 
 const SocialLogin = () => {
     const {signInWithGoogle}= useAuth()
     const location = useLocation()
+    const axiosInstance=useAxios()
+    const axiosSecure=useAxiosSecure()
     const navigate = useNavigate()
     const from = location.state?.form ||  "/"
     const handleSocialLogin=()=>{
          signInWithGoogle() .then(async (result) => {
                 const user = result.user;
                 console.log(result.user); 
+
+        await axiosSecure.post('/jwt', { email: user.email });
+
+        const userInfo = {
+        displayName: user.name,
+        photoURL: user.photoURL,
+        email: user.email,
+        role: 'user',
+        created_at: new Date().toISOString(),
+        last_log_in: new Date().toISOString()
+      }; 
+                const res = await axiosInstance.post('/users', userInfo);
+                console.log('customer update info', res.data)
                 
                 navigate(from);
             })

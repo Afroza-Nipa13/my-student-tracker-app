@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
-
+import logo from "../../assets/Logo.png"
 const Navbar = () => {
   const { user, LogOut } = useAuth() || {}; 
   const [photoURL, setPhotoURL]=useState("/src/assets/user.png")
@@ -51,26 +51,29 @@ const Navbar = () => {
   const links = (
     <>
       <li className="px-3 py-1">
+        <NavLink to="/">Home</NavLink>
+      </li>
+      <li className="px-3 py-1">
         <NavLink to="/class-schedule">Class Schedule</NavLink>
       </li>
       <li className="px-3 py-1">
         <NavLink to="/budget-plan">Budget Plan</NavLink>
       </li>
-      <li className="px-3 py-1">
+      {/* <li className="px-3 py-1">
         <NavLink to="/notes">Notes</NavLink>
-      </li>
+      </li> */}
       <li className="px-3 py-1">
         <NavLink to="/calculator">Calculator</NavLink>
       </li>
       <li className="px-3 py-1">
         <NavLink to="/studyPlanner">Study Planner</NavLink>
       </li>
-      <li className="px-3 py-1">
+      {/* <li className="px-3 py-1">
         <NavLink to="/reminder">Reminder</NavLink>
-      </li>
-      <li className="px-3 py-1">
+      </li> */}
+      {/* <li className="px-3 py-1">
         <NavLink to="/resources">Resources</NavLink>
-      </li>
+      </li> */}
       <li className="px-3 py-1">
         <NavLink to='/ExamQAgenerator'>Exam QA generator</NavLink>
       </li>
@@ -82,7 +85,7 @@ const Navbar = () => {
       {/* Left Section */}
       <div className="navbar-start">
         {/* Dropdown for small screens */}
-        <div className="dropdown dropdown-hover">
+        <div className="dropdown dropdown-hover text-white">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -106,9 +109,19 @@ const Navbar = () => {
             {links}
           </ul>
         </div>
-        <NavLink to="/" className="text-xl text-gray-50">
-          Student <span className="text-blue-300">Toolkits</span>
-        </NavLink>
+        <NavLink 
+  to="/" 
+  className="text-xl text-gray-50 flex items-center gap-2"
+>
+  <img 
+    src={logo} 
+    className="w-10 h-10" 
+    alt="Logo" 
+  />
+  <h3 className="font-semibold hidden lg:block">
+    Student <span className="text-blue-300 font-extrabold">Toolkit</span>
+  </h3>
+</NavLink>
       </div>
 
       {/* Center Section */}
@@ -153,7 +166,7 @@ const Navbar = () => {
                   <div className="text-sm text-gray-300">{user.email}</div>
                 </li>
                 <li><NavLink to="/profile" className="text-gray-200">Profile</NavLink></li>
-                <li><NavLink to="/settings" className="text-gray-200">Settings</NavLink></li>
+                {/* <li><NavLink to="/settings" className="text-gray-200">Settings</NavLink></li> */}
               </ul>
             </div>
             <button onClick={handleLogout} className="btn btn-error btn-sm text-white flex items-center gap-1">

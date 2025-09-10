@@ -13,8 +13,8 @@ const Banner = () => {
                     height: '500px', // Example height
                     width: '100%', // Example width
                 }}
-                className='lg:flex justify-between w-[100vw] mx-auto mt-6  shadow-2xl border-6 border-gray-600'>
-                <div className='bg-[#92a8d1] text-gray-100 mt-30 text-center h-1/2 w-1/2 py-10 space-y-3 justify-center'>
+                className='lg:flex  justify-between lg:w-[100vw] mx-auto lg:mt-6  shadow-2xl border-6 border-gray-600'>
+                <div className='bg-[#92a8d1] text-gray-100 mt-30 text-center h-1/2 lg:w-1/2 w-full py-10 space-y-3 justify-center'>
                     <h3 className='text-4xl font-bold pt-4'>My Student Toolkit</h3>
                     <div className='flex justify-center gap-3 mt-12'>
 
@@ -23,7 +23,7 @@ const Banner = () => {
                         <button className='btn bg-slate-400 text-white'>Budget Plan</button>
                     </div>
                 </div>
-                <div className='w-1/2 h-full'>
+                <div className='lg:w-1/2 md:w-full lg:h-full md:h-1/2'>
                     <img
                         className='w-full h-full object-cover'
                         src={bannerImg} alt="student toolkit " />

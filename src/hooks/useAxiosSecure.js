@@ -1,15 +1,16 @@
 import axios from 'axios';
-import React from 'react';
-// http://localhost:5000
-//
+
 const axiosSecure = axios.create({
-  baseURL: 'http://localhost:5000',
-  withCredentials:true
-  
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  withCredentials: true, 
 });
 
-const useAxiosSecure = () => {
-    return axiosSecure;
-};
+axiosSecure.interceptors.request.use(config => {
+  const token = localStorage.getItem('access_token'); 
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
-export default useAxiosSecure;
+export default () => axiosSecure;
