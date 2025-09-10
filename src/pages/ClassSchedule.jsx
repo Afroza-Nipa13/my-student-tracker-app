@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Swal from "sweetalert2";
 import useAuth from '../hooks/useAuth';
+import bannerImg from "../assets/toolkit.jpg";
+import printedBg from '../assets/leaf-bg.jpg';
 import useAxiosSecure from '../hooks/useAxiosSecure';
 
 const ClassSchedule = () => {
@@ -204,12 +206,36 @@ const ClassSchedule = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
-            <h1 className="text-2xl font-bold mb-6">📚 Class Schedule Tracker</h1>
-            <p className="text-gray-600 mb-6">Welcome, {user?.displayName || user?.email}! Here's your personal class schedule.</p>
+        <div className="min-h-screen bg-gray-100 flex flex-col items-center">
+              {/* Header Banner */}
+                        <div
+                            style={{
+                                backgroundImage: `url(${printedBg})`,
+                                backgroundRepeat: 'repeat',
+                                backgroundPosition: 'center',
+                            }}
+                            className="flex flex-col lg:flex-row justify-between w-full mx-auto shadow-2xl border-4 border-gray-300 rounded-lg overflow-hidden"
+                        >
+                            <div className="bg-[#92a8d1] text-gray-100 lg:w-1/2 p-8 space-y-4 flex flex-col justify-center">
+                                <h1 className="text-2xl font-bold mb-6"> Class Schedule Tracker</h1>
+            <p className="text-gray-600 mb-6">Welcome, <span className='font-bold'>{user?.displayName || user?.email}</span>! Here's your personal class schedule.</p>
+                                <div className="flex flex-wrap gap-3 mt-4">
+                                   
+                                   
+                                </div>
+                            </div>
+                            <div className="lg:w-1/2 h-64 lg:h-auto">
+                                <img
+                                    className="w-full h-full object-cover"
+                                    src={bannerImg} 
+                                    alt="Budget planning" 
+                                />
+                            </div>
+                        </div>
+            
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-6 w-full max-w-lg mb-6">
+            <form onSubmit={handleSubmit} className="bg-white shadow-sm rounded-lg p-6 w-full max-w-lg my-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <input
                         type="text"

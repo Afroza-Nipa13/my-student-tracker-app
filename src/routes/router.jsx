@@ -6,12 +6,13 @@ import ClassSchedule from "../pages/ClassSchedule";
 import BudgetPlan from "../pages/BudgetPlan";
 import Notes from "../pages/Notes";
 import Calculator from "../pages/Calculator";
-import Todo from "../pages/Todo";
+
 import Reminder from "../pages/Reminder";
 import Resources from "../pages/Resources";
 import Register from "../Authentication/Register";
 import SignIn from "../Authentication/SignIn";
 import ExamQAgenerator from "../pages/ExamQAgenerator";
+import StudyPlanner from "../pages/StudyPlanner";
 
 
 const router = createBrowserRouter([
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
       { path: "notes", element: <Notes /> },
       { path: "ExamQAgenerator", element:<ExamQAgenerator/>},
       { path: "calculator", element: <Calculator /> },
-      { path: "todo", element: <Todo /> },
+      { path: "studyPlanner", element: <StudyPlanner /> },
       { path: "reminder", element: <Reminder /> },
       { path: "resources", element: <Resources /> },
       { path:"register", element:<Register/>},

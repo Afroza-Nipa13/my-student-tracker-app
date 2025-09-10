@@ -63,7 +63,7 @@ const Navbar = () => {
         <NavLink to="/calculator">Calculator</NavLink>
       </li>
       <li className="px-3 py-1">
-        <NavLink to="/todo">To-do List</NavLink>
+        <NavLink to="/studyPlanner">Study Planner</NavLink>
       </li>
       <li className="px-3 py-1">
         <NavLink to="/reminder">Reminder</NavLink>

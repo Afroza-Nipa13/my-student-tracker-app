@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { FaQuestionCircle, FaGraduationCap, FaCheckCircle, FaSyncAlt } from 'react-icons/fa';
 import Swal from 'sweetalert2';
+import useAxiosSecure from '../hooks/useAxiosSecure';
 
 const ExamQAGenerator = () => {
+    const axiosSecure = useAxiosSecure(); // ✅ axios instance
     const [questions, setQuestions] = useState([]);
     const [settings, setSettings] = useState({
         subject: '',
@@ -15,74 +17,6 @@ const ExamQAGenerator = () => {
     const [results, setResults] = useState({});
     const [isLoading, setIsLoading] = useState(false);
 
-    // Sample question bank (in a real app, this would come from a database)
-    const questionBank = {
-        math: {
-            algebra: {
-                easy: [
-                    {
-                        question: "What is the value of x in the equation 2x + 5 = 15?",
-                        type: "mcq",
-                        options: ["5", "10", "7.5", "20"],
-                        answer: "5",
-                        explanation: "Subtract 5 from both sides: 2x = 10, then divide by 2: x = 5"
-                    },
-                    {
-                        question: "Simplify the expression: 3(x + 2) - 2x",
-                        type: "short",
-                        answer: "x + 6",
-                        explanation: "Distribute 3: 3x + 6 - 2x = x + 6"
-                    }
-                ],
-                medium: [
-                    {
-                        question: "Solve the quadratic equation: x² - 5x + 6 = 0",
-                        type: "mcq",
-                        options: ["x = 2, x = 3", "x = 1, x = 6", "x = -2, x = -3", "x = 5, x = 6"],
-                        answer: "x = 2, x = 3",
-                        explanation: "Factor the equation: (x-2)(x-3)=0, so x=2 or x=3"
-                    }
-                ],
-                hard: [
-                    {
-                        question: "Find the roots of the equation: 2x² - 4x - 6 = 0",
-                        type: "short",
-                        answer: "x = 3, x = -1",
-                        explanation: "Use the quadratic formula: x = [4 ± √(16 + 48)] / 4 = [4 ± 8] / 4"
-                    }
-                ]
-            },
-            calculus: {
-                easy: [
-                    {
-                        question: "What is the derivative of x²?",
-                        type: "mcq",
-                        options: ["2x", "x", "2", "x³/3"],
-                        answer: "2x",
-                        explanation: "Using the power rule: d/dx(xⁿ) = n*xⁿ⁻¹"
-                    }
-                ],
-                // More questions would be here...
-            }
-        },
-        science: {
-            physics: {
-                easy: [
-                    {
-                        question: "What is the unit of force?",
-                        type: "mcq",
-                        options: ["Newton", "Joule", "Watt", "Pascal"],
-                        answer: "Newton",
-                        explanation: "Force is measured in Newtons (N)"
-                    }
-                ],
-                // More questions would be here...
-            }
-            // More subjects would be here...
-        }
-        // More categories would be here...
-    };
-
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setSettings({
@@ -91,7 +25,7 @@ const ExamQAGenerator = () => {
         });
     };
 
-    const generateQuestions = () => {
+    const generateQuestions = async () => {
         if (!settings.subject || !settings.topic) {
             Swal.fire({
                 icon: 'warning',
@@ -103,37 +37,42 @@ const ExamQAGenerator = () => {
         }
 
         setIsLoading(true);
-        
-        // Simulate API call delay
-        setTimeout(() => {
-            const subjectQuestions = questionBank[settings.subject]?.[settings.topic]?.[settings.difficulty] || [];
-            
-            if (subjectQuestions.length === 0) {
+
+        try {
+            //  axios 
+            const res = await axiosSecure.get('/api/questions', {
+                params: {
+                    subject: settings.subject,
+                    topic: settings.topic,
+                    difficulty: settings.difficulty,
+                    type: settings.questionType,
+                    limit: settings.numberOfQuestions
+                }
+            });
+
+            if (res.data.length === 0) {
                 Swal.fire({
                     icon: 'error',
                     title: 'No Questions Available',
                     text: 'No questions found for the selected criteria. Please try different settings.',
-                    confirmButtonColor: '#3085d6',
                 });
                 setIsLoading(false);
                 return;
             }
-            
-            // Select random questions
-            const selectedQuestions = [];
-            const availableQuestions = [...subjectQuestions];
-            
-            for (let i = 0; i < Math.min(settings.numberOfQuestions, availableQuestions.length); i++) {
-                const randomIndex = Math.floor(Math.random() * availableQuestions.length);
-                selectedQuestions.push(availableQuestions[randomIndex]);
-                availableQuestions.splice(randomIndex, 1);
-            }
-            
-            setQuestions(selectedQuestions);
+
+            setQuestions(res.data);
             setAnswers({});
             setResults({});
+        } catch (error) {
+            console.error("Error fetching questions:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response?.data?.message || 'Something went wrong while fetching questions!',
+            });
+        } finally {
             setIsLoading(false);
-        }, 1000);
+        }
     };
 
     const handleAnswerChange = (questionIndex, value) => {
@@ -146,28 +85,27 @@ const ExamQAGenerator = () => {
     const checkAnswers = () => {
         const newResults = {};
         let correctCount = 0;
-        
+
         questions.forEach((question, index) => {
             const userAnswer = answers[index] || '';
             const isCorrect = userAnswer.toString().toLowerCase() === question.answer.toString().toLowerCase();
-            
+
             if (isCorrect) correctCount++;
-            
+
             newResults[index] = {
                 isCorrect,
                 correctAnswer: question.answer,
                 explanation: question.explanation
             };
         });
-        
+
         setResults(newResults);
-        
-        // Show results summary
+
         Swal.fire({
             title: 'Results',
             html: `You got <b>${correctCount}</b> out of <b>${questions.length}</b> questions correct!`,
-            icon: correctCount === questions.length ? 'success' : 
-                  correctCount > questions.length / 2 ? 'info' : 'error',
+            icon: correctCount === questions.length ? 'success' :
+                correctCount > questions.length / 2 ? 'info' : 'error',
             confirmButtonColor: '#3085d6',
         });
     };
