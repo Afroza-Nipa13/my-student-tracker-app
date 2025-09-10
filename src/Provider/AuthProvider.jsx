@@ -39,31 +39,33 @@ const AuthProvider = ({children}) => {
    // onAuthStateChange
   
   useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, async currentUser => {
-    setUser(currentUser);
+    const unsubscribe = onAuthStateChanged(auth, async currentUser => {
+      setUser(currentUser)
 
-    if (currentUser) {
-      try {
-        const res = await axiosSecure.post('/jwt', { email: currentUser.email });
-        localStorage.setItem('access_token', res.data.token); // token save
-        console.log('JWT saved:', res.data.token);
-      } catch (err) {
-        console.error('JWT error:', err);
+      if (currentUser) {
+        
+        try {
+          const res = await axiosSecure.post('/jwt', { email: currentUser.email })
+          console.log('JWT set in cookie:', res.data)
+        } catch (err) {
+          console.error('JWT error:', err)
+        }
+      } else {
+        
+        try {
+          await axiosSecure.get('/logout')
+          console.log('Token cleared')
+        } catch (err) {
+          console.error('Logout error:', err)
+        }
       }
-    } else {
-      localStorage.removeItem('access_token');
-      console.log('Token cleared');
-    }
 
-    setLoading(false);
-  });
+      setLoading(false)
+    })
 
-  return () => unsubscribe();
-}, [axiosSecure]);
-
-    
-
-const authInfo={
+    return () => unsubscribe()
+  }, [axiosSecure])
+    const authInfo={
         user,
     setUser,
     loading,

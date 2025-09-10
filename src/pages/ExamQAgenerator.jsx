@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { FaQuestionCircle, FaGraduationCap, FaCheckCircle, FaSyncAlt } from 'react-icons/fa';
 import Swal from 'sweetalert2';
-import useAxiosSecure from '../hooks/useAxiosSecure';
+
+import useAxios from '../hooks/useAxios';
 
 const ExamQAGenerator = () => {
-    const axiosSecure = useAxiosSecure(); // ✅ axios instance
+    const axios = useAxios(); // ✅ axios instance
     const [questions, setQuestions] = useState([]);
     const [settings, setSettings] = useState({
         subject: '',
@@ -40,7 +41,7 @@ const ExamQAGenerator = () => {
 
         try {
             //  axios 
-            const res = await axiosSecure.get('/api/questions', {
+            const res = await axios.get('/api/questions', {
                 params: {
                     subject: settings.subject,
                     topic: settings.topic,

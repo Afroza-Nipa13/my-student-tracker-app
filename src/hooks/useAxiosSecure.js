@@ -1,16 +1,14 @@
 import axios from 'axios';
-
+// http://localhost:5000 
+// https://my-student-tracker-app-server.vercel.app
 const axiosSecure = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-  withCredentials: true, 
+  baseURL: 'https://my-student-tracker-app-server.vercel.app',
+  withCredentials:true
+  
 });
 
-axiosSecure.interceptors.request.use(config => {
-  const token = localStorage.getItem('access_token'); 
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+const useAxiosSecure = () => {
+    return axiosSecure;
+};
 
-export default () => axiosSecure;
+export default useAxiosSecure;
