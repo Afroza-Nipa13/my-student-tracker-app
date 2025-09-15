@@ -4,6 +4,9 @@ import useAuth from '../hooks/useAuth';
 import bannerImg from "../assets/toolkit.jpg";
 import printedBg from '../assets/leaf-bg.jpg';
 import useAxiosSecure from '../hooks/useAxiosSecure';
+import { FaCross, FaPenAlt } from 'react-icons/fa';
+import { ImCross } from 'react-icons/im';
+import { MdModeEditOutline } from 'react-icons/md';
 
 const ClassSchedule = () => {
     const { user } = useAuth();
@@ -196,7 +199,7 @@ const ClassSchedule = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+            <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
                     <p className="mt-4 text-gray-600">Loading your schedule...</p>
@@ -206,7 +209,7 @@ const ClassSchedule = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 flex flex-col items-center">
+        <div className="min-h-screen  flex flex-col items-center">
               {/* Header Banner */}
                         <div
                             style={{
@@ -291,14 +294,14 @@ const ClassSchedule = () => {
                 </div>
                 <button
                     type="submit"
-                    className="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600 w-full"
+                    className="bg-slate-500 text-white px-4 py-2 rounded mt-4 hover:bg-slate-600 w-full"
                 >
                     {editId ? "Update Class" : "Add Class"}
                 </button>
             </form>
 
             {/* Class Table */}
-            <div className="w-full max-w-3xl bg-white shadow-md rounded-lg overflow-hidden">
+            <div className="w-full max-w-3xl  shadow-md rounded-lg overflow-hidden">
                 {classes.length === 0 ? (
                     <div className="text-center p-6">
                         <p className="text-gray-500 mb-4">No classes added yet.</p>
@@ -306,7 +309,7 @@ const ClassSchedule = () => {
                     </div>
                 ) : (
                     <table className="w-full">
-                        <thead className="bg-gray-200">
+                        <thead className="">
                             <tr>
                                 <th className="p-2 text-left">Subject</th>
                                 <th className="p-2 text-left">Time</th>
@@ -327,17 +330,17 @@ const ClassSchedule = () => {
                                     <td className="p-2 text-center space-x-2">
                                         <button
                                             onClick={() => handleEdit(index)}
-                                            className="bg-yellow-400 px-2 py-1 rounded hover:bg-yellow-500"
+                                            className="bg-yellow-100 px-2 py-1 rounded hover:text-white hover:bg-yellow-500"
                                             title="Edit"
                                         >
-                                            ✏️
+                                           <MdModeEditOutline />
                                         </button>
                                         <button
                                             onClick={() => handleDelete(index)}
-                                            className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                                            className="bg-red-100 text-red-500 hover:text-white px-2 py-1 rounded hover:bg-red-500"
                                             title="Delete"
                                         >
-                                            ❌
+                                            <ImCross />
                                         </button>
                                     </td>
                                 </tr>

@@ -115,8 +115,8 @@ const StudyPlanner = () => {
         </p>
       ) : (
         <div className="overflow-x-auto mt-6">
-          <table className="table table-zebra w-full text-white">
-            <thead className="text-white">
+          <table className="table w-full ">
+            <thead className="text-gray-500">
               <tr>
                 <th>Subject</th>
                 <th>Topic</th>

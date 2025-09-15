@@ -6,7 +6,6 @@ import ClassSchedule from "../pages/ClassSchedule";
 import BudgetPlan from "../pages/BudgetPlan";
 import Notes from "../pages/Notes";
 import Calculator from "../pages/Calculator";
-
 import Reminder from "../pages/Reminder";
 import Resources from "../pages/Resources";
 import Register from "../Authentication/Register";
@@ -14,11 +13,13 @@ import SignIn from "../Authentication/SignIn";
 import ExamQAgenerator from "../pages/ExamQAgenerator";
 import StudyPlanner from "../pages/StudyPlanner";
 import ProfilePage from "../shared/ProfilePage";
+import Error from "../shared/Error";
 
 
 const router = createBrowserRouter([
   {
     path: "/",
+    errorElement: <Error />, 
     element: <MainLayOut></MainLayOut>,
     children: [
       { index: true, element: <Home /> },
